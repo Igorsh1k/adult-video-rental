@@ -32,3 +32,8 @@ def admin_home():
 @login_required(role='user')
 def user_home():
     return render_template('user_home.html')
+
+
+@homepages_bp.route('/catalog')
+def catalog():
+    return render_template('catalog.html')

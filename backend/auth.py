@@ -35,4 +35,4 @@ def register():
 def logout():
     session.pop('username', None)
     session.pop('role', None)
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('home'))

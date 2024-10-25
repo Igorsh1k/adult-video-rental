@@ -13,5 +13,17 @@ init_db()
 def home():
     return render_template('index.html')
 
+
+@app.route('/account')
+def account():
+    if 'username' not in session:
+        return redirect(url_for('auth.login'))
+    elif session.get('role') == 'admin':
+        return redirect(url_for('homepages.admin_home'))
+    else:
+        return redirect(url_for('homepages.user_home'))
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
