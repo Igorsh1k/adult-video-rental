@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieRental: Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+    <h1>Register on MovieRental</h1>
+    <p>Join us to access our exclusive movie library!</p>
+</header>
+<main>
+    <section>
+        <form method="POST" action="/register">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="Create a password" required>
+
+            <label for="birth_date">Date of Birth:</label>
+            <input type="date" name="birth_date" id="birth_date" required>
+
+            <input type="hidden" name="role" value="user">
+
+            <button type="submit">Register</button>
+        </form>
+    </section>
+</main>
+<footer>
+    <p>Email: support@movierental.com</p>
+    <p>Phone: +38 012 345 6789</p>
+</footer>
+</body>
+</html>

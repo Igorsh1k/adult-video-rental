@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MovieRental</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+    <h1>Login to MovieRental</h1>
+    <p>Access your personalized movie library and start watching!</p>
+</header>
+<main>
+    <section>
+        <form method="POST" action="/login">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account yet? <a href="{{ url_for('auth.register') }}">Create one here</a> and start exploring!</p>
+    </section>
+</main>
+<footer>
+    <p>Email: support@movierental.com</p>
+    <p>Phone: +38 012 345 6789</p>
+</footer>
+</body>
+</html>
