@@ -58,3 +58,10 @@ def delete_movie(movie_id):
 def list_movies():
     movies = movies_collection.find()
     return [format_movie(movie) for movie in movies]
+
+
+def list_user_movies(username):
+    user_movies = movies_collection.find({"owner": username})
+    return [format_movie(movie) for movie in user_movies]
+
+

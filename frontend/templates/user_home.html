@@ -25,12 +25,38 @@
             </div>
         </nav>
     </header>
-<main>
-    <section>
-        <h2>Your Collection</h2>
-        <p>Access and manage your borrowed movies here. Happy watching!</p>
-    </section>
-</main>
+
+    <main>
+        <section>
+            <h2>Your Collection</h2>
+            <p>Access and manage your borrowed movies here. Happy watching!</p>
+            <div class="movie-grid">
+                {% for movie in user_movies %}
+                    <div class="movie-card">
+                        <h3>{{ movie.title }}</h3>
+                        <p>{{ movie.description }}</p>
+                        <button onclick="returnMovie('{{ movie.id }}')">Return</button>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function returnMovie(movieId) {
+            fetch(`/return_movie/${movieId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                        location.reload();
+                    } else if (data.error) {
+                        alert(data.error);
+                    }
+                });
+        }
+    </script>
+
 <footer>
     <p>Email: support@movierental.com</p>
     <p>Phone: +38 012 345 6789</p>

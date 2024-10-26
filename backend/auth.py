@@ -36,3 +36,10 @@ def logout():
     session.pop('username', None)
     session.pop('role', None)
     return redirect(url_for('home'))
+
+
+def list_user_movies(username):
+    user_movies = movies_collection.find({"owner": username})
+    return [format_movie(movie) for movie in user_movies]
+
+

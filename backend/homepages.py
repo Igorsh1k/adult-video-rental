@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, render_template, session, redirect, url_for, jsonify, request
-from database import list_movies, update_movie, get_movie
+from database import *
 import database
 
 homepages_bp = Blueprint('homepages', __name__)
@@ -34,7 +34,9 @@ def admin_home():
 @homepages_bp.route('/user')
 @login_required(role='user')
 def user_home():
-    return render_template('user_home.html')
+    username = session.get('username')
+    user_movies = list_user_movies(username)
+    return render_template('user_home.html', user_movies=user_movies)
 
 
 @homepages_bp.route('/catalog')
@@ -76,5 +78,14 @@ def take_movie(movie_id):
     else:
         return jsonify({"error": "Movie is not available"}), 400
 
+
+@homepages_bp.route('/return_movie/<movie_id>', methods=['POST'])
+@login_required(role='user')
+def return_movie(movie_id):
+    movie = get_movie(movie_id)
+    if movie and movie['owner'] == session.get('username'):
+        update_movie(movie_id, {'owner': 'store', 'is_available': True})
+        return jsonify({"message": "Movie returned successfully"})
+    return jsonify({"error": "Unable to return the movie"}), 400
 
 
