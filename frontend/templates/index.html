@@ -7,10 +7,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<header>
-    <h1>Welcome to MovieRental</h1>
-    <p>Explore the Latest Films & Classics with Ease</p>
-</header>
+    <header>
+        <h1>Welcome to MovieRental</h1>
+        <p>Explore the Latest Films & Classics with Ease</p>
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="{{ url_for('home') }}" class="nav-button">Home</a>
+                <a href="{{ url_for('homepages.catalog') }}" class="nav-button">Catalog</a>
+            </div>
+            <div class="nav-right">
+                <a href="{{ url_for('account') }}" class="nav-button">Account</a>
+                {% if session.get('username') %}
+                    <a href="{{ url_for('auth.logout') }}" class="nav-button">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="nav-button">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
 <main>
     <section>
         <h2>About Us</h2>

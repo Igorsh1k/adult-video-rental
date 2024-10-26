@@ -7,19 +7,59 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<header>
-    <h1>Welcome to Your MovieRental Dashboard</h1>
-    <p>Discover new movies and manage your rentals with ease</p>
-</header>
-<main>
-    <section>
-        <h2>Your Collection</h2>
-        <p>Access and manage your borrowed movies here. Happy watching!</p>
-    </section>
-</main>
-<footer>
-    <p>Email: support@movierental.com</p>
-    <p>Phone: +38 012 345 6789</p>
-</footer>
+    <header>
+        <h1>Welcome to MovieRental</h1>
+        <p>Explore the Latest Films & Classics with Ease</p>
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="{{ url_for('home') }}" class="nav-button">Home</a>
+                <a href="{{ url_for('homepages.catalog') }}" class="nav-button">Catalog</a>
+            </div>
+            <div class="nav-right">
+                <a href="{{ url_for('account') }}" class="nav-button">Account</a>
+                {% if session.get('username') %}
+                    <a href="{{ url_for('auth.logout') }}" class="nav-button">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="nav-button">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Your Collection</h2>
+            <p>Access and manage your borrowed movies here. Happy watching!</p>
+            <div class="catalog">
+                {% for movie in user_movies %}
+                    <div class="movie-card">
+                        <h3>{{ movie.title }}</h3>
+                        <p>{{ movie.description }}</p>
+                        <button onclick="returnMovie('{{ movie.id }}')">Return</button>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Email: support@movierental.com</p>
+        <p>Phone: +38 012 345 6789</p>
+    </footer>
+
+    <script>
+        function returnMovie(movieId) {
+            fetch(`/return_movie/${movieId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                        location.reload();
+                    } else if (data.error) {
+                        alert(data.error);
+                    }
+                });
+        }
+    </script>
 </body>
 </html>
