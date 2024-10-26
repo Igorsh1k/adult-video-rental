@@ -90,3 +90,33 @@ def return_movie(movie_id):
     return jsonify({"error": "Unable to return the movie"}), 400
 
 
+@homepages_bp.route('/edit_movie/<movie_id>', methods=['GET', 'POST'])
+@login_required(role='admin')
+def edit_movie(movie_id):
+    movie = get_movie(movie_id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        is_adult = 'is_adult' in request.form
+        is_available = 'is_available' in request.form
+
+        update_movie(movie_id, {
+            'title': title,
+            'description': description,
+            'is_adult': is_adult,
+            'is_available': is_available
+        })
+
+        return redirect(url_for('homepages.admin_home'))
+
+    return render_template('edit_movie.html', movie=movie)
+
+
+@homepages_bp.route('/delete_movie/<movie_id>', methods=['POST'])
+@login_required(role='admin')
+def delete_movie(movie_id):
+    database.delete_movie(movie_id)
+    return redirect(url_for('homepages.admin_home'))
+
+
