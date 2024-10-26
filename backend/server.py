@@ -8,7 +8,7 @@ app = Flask(__name__, static_folder="../frontend/static", template_folder="../fr
 app.secret_key = 'your_secret_key'
 app.register_blueprint(auth_bp)
 app.register_blueprint(homepages_bp)
-app.register_blueprint(video_bp, url_prefix='/api')
+app.register_blueprint(video_bp)
 init_db()
 
 @app.route('/')

@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson import ObjectId
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client['adult-video-rental-DB']
@@ -26,24 +27,34 @@ def get_user(username):
 
 
 # CRUD з фільмами
+def format_movie(movie):
+    movie['id'] = str(movie['_id'])
+    del movie['_id']
+    return movie
+
 def add_movie(title, description, is_adult, is_available=True, owner="store"):
-    movie_data = {
-        'title': title,
-        'description': description,
-        'is_adult': is_adult,
-        'is_available': is_available,
-        'owner': owner
+    movie = {
+        "title": title,
+        "description": description,
+        "is_adult": is_adult,
+        "is_available": is_available,
+        "owner": owner
     }
-    movies_collection.insert_one(movie_data)
+    movies_collection.insert_one(movie)
 
 def get_movie(movie_id):
-    return movies_collection.find_one({'_id': movie_id})
+    movie = movies_collection.find_one({"_id": ObjectId(movie_id)})
+    if movie:
+        return format_movie(movie)
+    return None
 
-def update_movie(movie_id, update_data):
-    movies_collection.update_one({'_id': movie_id}, {'$set': update_data})
+def update_movie(movie_id, data):
+    update_data = {k: v for k, v in data.items() if v is not None}
+    movies_collection.update_one({"_id": ObjectId(movie_id)}, {"$set": update_data})
 
 def delete_movie(movie_id):
-    movies_collection.delete_one({'_id': movie_id})
+    movies_collection.delete_one({"_id": ObjectId(movie_id)})
 
 def list_movies():
-    return list(movies_collection.find())
+    movies = movies_collection.find()
+    return [format_movie(movie) for movie in movies]

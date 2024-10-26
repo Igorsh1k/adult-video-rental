@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from database import add_movie, get_movie, update_movie, delete_movie, list_movies
+import database
 
 video_bp = Blueprint('video', __name__)
 
