@@ -25,27 +25,57 @@
             </div>
         </nav>
     </header>
-<main>
-    <section>
-        <h2>Admin Tools</h2>
-        <p>Manage movie listings, user accounts, and other administrative tasks from this dashboard.</p>
 
-        <div class="catalog">
-            {% for movie in movies %}
-                <div class="movie-card">
-                    <h3>{{ movie.title }}</h3>
-                    <p>{{ movie.description }}</p>
-                    <p>Available: {{ "Yes" if movie.is_available else "No" }}</p>
-                    <p>Adult Content: {{ "Yes" if movie.is_adult else "No" }}</p>
-                    <a href="{{ url_for('homepages.edit_movie', movie_id=movie.id) }}" class="button-login">Edit</a>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-</main>
-<footer>
-    <p>Email: support@movierental.com</p>
-    <p>Phone: +38 012 345 6789</p>
-</footer>
+    <main>
+        <section>
+            <h2>Admin Tools</h2>
+            <p>Manage movie listings, user accounts, and other administrative tasks from this dashboard.</p>
+
+            <!-- Form for Adding a New Movie -->
+            <div class="new-movie-form">
+                <h3>Add New Movie</h3>
+                <form action="{{ url_for('homepages.create_movie') }}" method="POST">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required>
+
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+
+                    <!-- Age Category as Boolean Field -->
+                    <label for="is_adult">Age Category:</label>
+                    <div>
+                        <input type="checkbox" id="is_adult" name="is_adult">
+                        <label for="is_adult">18+ (Check if adult content)</label>
+                    </div>
+
+                    <button type="submit" class="button-login">Create Movie</button>
+                </form>
+            </div>
+
+            <!-- Add some space after the form -->
+            <div style="margin-bottom: 40px;"></div>
+
+            <!-- Title for the movie catalog -->
+            <h3>Current Movie Catalog</h3>
+
+            <!-- Movie Catalog for Admin -->
+            <div class="catalog">
+                {% for movie in movies %}
+                    <div class="movie-card">
+                        <h3>{{ movie.title }}</h3>
+                        <p>{{ movie.description }}</p>
+                        <p>Available: {{ "Yes" if movie.is_available else "No" }}</p>
+                        <p>Adult Content: {{ "Yes" if movie.is_adult else "No" }}</p>
+                        <a href="{{ url_for('homepages.edit_movie', movie_id=movie.id) }}" class="button-login">Edit</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Email: support@movierental.com</p>
+        <p>Phone: +38 012 345 6789</p>
+    </footer>
 </body>
 </html>

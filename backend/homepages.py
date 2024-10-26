@@ -120,3 +120,15 @@ def delete_movie(movie_id):
     return redirect(url_for('homepages.admin_home'))
 
 
+@homepages_bp.route('/create_movie', methods=['POST'])
+@login_required(role='admin')
+def create_movie():
+    title = request.form.get('title')
+    description = request.form.get('description')
+    age_category = request.form.get('age_category')
+
+    is_adult = age_category == 'adult'
+
+    add_movie(title, description, is_adult)
+
+    return redirect(url_for('homepages.admin_home'))
