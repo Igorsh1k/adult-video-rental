@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalog - MovieRental</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function takeMovie(movieId) {
+            try {
+                const response = await fetch(`/take_movie/${movieId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -25,12 +47,33 @@
             </div>
         </nav>
     </header>
-<main>
-    <p>This is a placeholder for the catalog content.</p>
-</main>
-<footer>
-    <p>Email: support@movierental.com</p>
-    <p>Phone: +38 012 345 6789</p>
-</footer>
+
+    <main>
+        <h2>Movie Catalog</h2>
+        <div class="catalog">
+            {% for movie in movies %}
+                <div class="movie-card">
+                    <h3>{{ movie.title }}</h3>
+                    <p>{{ movie.description }}</p>
+                    <p><strong>Adult Only:</strong> {{ "Yes" if movie.is_adult else "No" }}</p>
+                    <p><strong>Owner:</strong> {{ movie.owner }}</p>
+                    {% if movie.owner == 'store' and movie.is_available %}
+                        {% if session.get('username') %}
+                            <button onclick="takeMovie('{{ movie.id }}')">Take Movie</button>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="button-login">Login</a>
+                        {% endif %}
+                    {% else %}
+                        <p><em>Currently unavailable</em></p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        <p>Email: support@movierental.com</p>
+        <p>Phone: +38 012 345 6789</p>
+    </footer>
 </body>
 </html>
