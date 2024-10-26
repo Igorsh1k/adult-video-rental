@@ -29,7 +29,8 @@ def login_required(role=None):
 @homepages_bp.route('/admin')
 @login_required(role='admin')
 def admin_home():
-    return render_template('admin_home.html')
+    movies = list_movies()
+    return render_template('admin_home.html', movies=movies)
 
 @homepages_bp.route('/user')
 @login_required(role='user')
